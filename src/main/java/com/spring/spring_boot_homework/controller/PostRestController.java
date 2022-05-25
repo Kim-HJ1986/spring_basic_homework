@@ -52,4 +52,9 @@ public class PostRestController {
             return "비밀번호가 일치하지 않습니다.";
         }
     }
+
+    @DeleteMapping("/api/posts")
+    public void deleteAllPost(){
+        postRepository.deleteAll();
+    }
 }

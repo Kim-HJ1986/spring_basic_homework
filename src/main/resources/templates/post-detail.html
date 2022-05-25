@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+  (게시글 번호: <span th:text="${post.id}"></span>)
+  (제목: <span th:text="${post.title}"></span>)
+  (작성자: <span th:text="${post.username}"></span>)
+  (내용: <span th:text="${post.content}"></span>)
+</div>
+<button onclick="location.replace('/')">메인으로</button>
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<script>
+    $(document).ready(function () {
+        getPosts();
+    })
+    function getPosts(){
+        $.ajax({
+            type: "GET",
+            url: "/api/posts",
+            success: function (response){
+                for(let i=0; i<response.length; i++){
+                    let post = response[i];
+                    let tempHtml = addHTML(post);
+                    $('#postList').append(tempHtml);
+
+                }
+            }
+        })
+    }
+
+    function addHTML(post) {
+        return `<div class="search-itemDto">
+                <div class="search-itemDto-center">
+                    <div>${post.title}</div>
+                    <div class="price">
+                        ${post.username}
+                        <span class="unit">님</span>
+                    </div>
+                </div>
+                <div class="search-itemDto-right">
+                    <img src="images/icon-save.png" alt="" onclick='location.replace("/post?id=${post.id}")'>
+                </div>
+            </div>`
+    }
+</script>
+<body>
+<div id="postList"></div>
+</body>
+</html>
