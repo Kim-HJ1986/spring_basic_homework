@@ -20,4 +20,5 @@
     - API를 호출할 때 입력된 비밀번호를 비교하여 동일할 때만 글이 삭제되게 하기
 
 - 설계한 API 
-![스프링입문과제API명세](https://user-images.githubusercontent.com/82041804/169949360-4ad57a8b-0bbe-48e7-aad3-b30f4aecb03f.JPG)
+
+![스프링입문과제API명세](https://user-images.githubusercontent.com/82041804/170024181-a8ea23bc-e0c1-412d-9035-bcf280b536db.JPG)
