@@ -20,7 +20,7 @@ public class PostController {
     @GetMapping("/post")
     public String showPostDetail(Model model, @RequestParam("id") Long id){
         Post post = postRepository.findById(id).orElseThrow(
-                () -> new NullPointerException("존재하지 않는 게시글 입니다.")
+                () -> new NullPointerException("존재하지 않는 게시글입니다.")
         );
         model.addAttribute("post", post);
         return "post-detail";
