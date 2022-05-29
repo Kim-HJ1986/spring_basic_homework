@@ -1,5 +1,5 @@
 # spring_basic_homework
-스프링 입문 주차 과제
+## 1. 스프링 입문 주차 과제
 
 <aside>
 ✅ 서비스 완성
@@ -24,6 +24,7 @@
 ![스프링입문과제API명세](https://user-images.githubusercontent.com/82041804/170024181-a8ea23bc-e0c1-412d-9035-bcf280b536db.JPG)
 
 
+## 2. 스프링 숙련 주차 과제 추가 개발 요구사항
 1. 회원 가입 API
     - 닉네임, 비밀번호, 비밀번호 확인을 request에서 전달받기
     - 닉네임은 `최소 3자 이상, 알파벳 대소문자(a~z, A~Z), 숫자(0~9)`로 구성하기
