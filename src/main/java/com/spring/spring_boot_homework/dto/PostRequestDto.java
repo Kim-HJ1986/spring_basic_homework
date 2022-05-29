@@ -1,4 +1,4 @@
-package com.spring.spring_boot_homework.models;
+package com.spring.spring_boot_homework.dto;
 
 import lombok.Getter;
 

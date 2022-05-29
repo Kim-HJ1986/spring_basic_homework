@@ -1,9 +1,9 @@
 package com.spring.spring_boot_homework.service;
 
-import com.spring.spring_boot_homework.models.Post;
-import com.spring.spring_boot_homework.models.PostPasswordRequestDto;
-import com.spring.spring_boot_homework.models.PostRepository;
-import com.spring.spring_boot_homework.models.PostRequestDto;
+import com.spring.spring_boot_homework.model.Post;
+import com.spring.spring_boot_homework.dto.PostPasswordRequestDto;
+import com.spring.spring_boot_homework.repository.PostRepository;
+import com.spring.spring_boot_homework.dto.PostRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

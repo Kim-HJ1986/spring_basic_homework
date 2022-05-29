@@ -1,4 +1,4 @@
-package com.spring.spring_boot_homework.models;
+package com.spring.spring_boot_homework.util;
 
 import lombok.Getter;
 import org.springframework.data.annotation.CreatedDate;

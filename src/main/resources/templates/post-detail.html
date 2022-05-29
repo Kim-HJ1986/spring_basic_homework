@@ -1,16 +1,240 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <style>
+        .card{
+            text-align: center;
+            margin: 0 auto;
+        }
+        .input-group{
+            width: 70rem;
+            text-align: center;
+            margin: 0 auto;
+        }
+        .passwordinput{
+            width: 30rem;
+            margin: 0 auto;
+        }
+        .btn-primary{
+            width: 90px;
+            position: absolute;
+            left: 47%;
+        }
+        .btn-danger{
+            width: 90px;
+            position: absolute;
+            left: 50%;
+            margin-left: 50px;
+        }
+        .btn-default{
+            width: 90px;
+            position: absolute;
+            right: 50%;
+            margin-right: 50px;
+        }
+        .reply-list-class{
+            margin-top: 70px;
+        }
+        .card{
+            border: 1px solid #111111;
+        }
+
+    </style>
 </head>
 <body>
-<div>
-  (게시글 번호: <span th:text="${post.id}"></span>)
-  (제목: <span th:text="${post.title}"></span>)
-  (작성자: <span th:text="${post.username}"></span>)
-  (내용: <span th:text="${post.content}"></span>)
+
+<div class="card" id="post-card" style="width: 70rem;">
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item">게시글 번호: <span th:text="${post.id}"></span></li>
+        <li class="list-group-item">작성자: <span th:text="${post.username}"></span></li>
+        <li class="list-group-item">제목: <span th:text="${post.title}"></span></li>
+        <li class="list-group-item">내용: <span th:text="${post.content}"></span></li>
+    </ul>
 </div>
-<button onclick="location.replace('/')">메인으로</button>
+
+<div class="input-group mb-3" id="title-div">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default">제목</span>
+    </div>
+    <input id="title-input" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+</div>
+<div class="input-group mb-3" id="content-div">
+    <div class="input-group-prepend">
+        <span class="input-group-text" id="inputGroup-sizing-default1">내용</span>
+    </div>
+    <input id="content-input" type="text" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+</div>
+
+
+
+<form>
+    <div class="form-group passwordinput" id="exampleInputPassword">
+        <label for="exampleInputPassword1">Password</label>
+        <input type="password" class="form-control" id="password_input" placeholder="Password">
+    </div>
+    <button id="submit4update" type="button" class="btn btn-primary" onclick="submitUpdatePost()">수정하기</button>
+    <div>
+    <button type="button" class="btn btn-default" onclick='window.location.href = "/"'>메인으로</button>
+    <button id="change4update" type="button" class="btn btn-primary" onclick="updatePost()" display="true">수정하기</button>
+    <button id="submit4delete" type="button" class="btn btn-danger" onclick="submitDeletePost()" display="true">삭제하기</button>
+    </div>
+</form>
+</br>
+</br>
+</br>
+<button id="openReplyInput" type="button" class="btn btn-primary" onclick="submitReply()">댓글작성</button>
+</br>
+<div id="reply-list" class="reply-list-class">
+
+    <div id="replyInput">
+
+        <div class="input-group mb-3" id="input-content-div">
+            <div class="input-group-prepend">
+
+                <span class="input-group-text">댓글</span>
+                <br>
+            </div>
+            <input id="input-content-input" type="textarea" class="form-control">
+        </div>
+    </div>
+
+</div>
+
+<div id="container" class="popup-container">
+    <div class="popup">
+        <button id="close" class="close">
+            X
+        </button>
+        <div>
+            <input type="text" id="updatedReply">
+        </div>
+        <button class="cta" onclick="updateReply(targetId)">수정하기</button>
+    </div>
+</div>
+
 </body>
+<script th:inline="javascript">
+    let targetId;
+
+    $(document).ready(function () {
+        $('#submit4update').hide();
+        $('#title-div').hide();
+        $('#content-div').hide();
+        $('#close').on('click', function () {
+            $('#container').removeClass('active');
+        })
+        getReplies();
+    })
+    function getReplies(){
+        $.ajax({
+            type: "GET",
+            url: `/api/replies/[[${post.id}]]`,
+            success: function (response){
+                for(let i = 0; i < response.length; i ++){
+                    console.log(response);
+                    let username = response[i].username;
+                    let content = response[i].content;
+                    let replyId = response[i].id;
+                    let tempHtml = ``;
+                    if([[${username}]] == username){
+                        tempHtml = `<div class="card" style="width: 70rem;">
+                                      <div class="card-body">
+                                        <h5 class="card-title" id="reply${replyId}">${content}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">${username}</h6>
+                                        <a onclick="openReply(${replyId})" class="card-link">수정</a>
+                                        <a onclick="#" class="card-link">삭제</a>
+                                      </div>
+                                    </div>`
+                    }else{
+                        tempHtml = `<div class="card" style="width: 70rem;">
+                                      <div class="card-body">
+                                        <h5 class="card-title">${content}</h5>
+                                        <h6 class="card-subtitle mb-2 text-muted">${username}</h6>
+                                      </div>
+                                    </div>`
+                    }
+                    $('#reply-list').append(tempHtml);
+                }
+            }
+        })
+    }
+    function submitReply(){
+        let content = $('#input-content-input').val();
+        let data = {"postNum":[[${post.id}]], "content": content, "username":[[${username}]]}
+        $.ajax({
+            type: "POST",
+            url: `/api/replies`,
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response){
+                window.location.reload();
+
+            }
+        })
+    }
+
+    function openReply(replyId){
+        let content = $(`#reply${replyId}`).text();''
+        $('#input-content-input').hide();
+        $('#container').addClass('active');
+        $('#updatedReply').attr('value', content)
+        targetId = replyId;
+    }
+
+    function updatePost(){
+        $('#submit4delete').hide();
+        $('#change4update').hide();
+        $('#submit4update').show();
+        $('#title-div').show();
+        $('#content-div').show();
+        $('#post-card').hide();
+        $('#title-input').attr('value', [[${post.title}]]);
+        $('#content-input').attr('value', [[${post.content}]]);
+    }
+
+    function submitUpdatePost(){
+        let title = $('#title-input').val();
+        let content = $('#content-input').val();
+        let password = $('#password_input').val();
+        let data = {"id":[[${post.id}]], "password":password, "title": title, "content": content, "username":[[${post.username}]]}
+        $.ajax({
+            type: "PUT",
+            url: `/api/posts/[[${post.id}]]`,
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response){
+                if(response){
+                    alert("수정이 완료되었습니다.")
+                    window.location.reload();
+                }else{
+                    alert("비밀번호가 일치하지 않습니다.");
+                }
+            }
+        })
+    }
+
+    function submitDeletePost(){
+        let password = $('#password_input').val();
+        let data = {"password":password}
+        $.ajax({
+            type: "DELETE",
+            url: `/api/posts/[[${post.id}]]`,
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success: function (response){
+                if(response){
+                    alert("삭제가 완료되었습니다.")
+                    window.location.href = "/";
+                }else{
+                    alert("비밀번호가 일치하지 않습니다.");
+                }
+            }
+        })
+    }
+</script>
 </html>

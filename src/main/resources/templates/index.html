@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta property="og:title" content="게시판">
+    <meta property="og:description" content="소통하는 공간입니다.">
+    <meta property="og:image" content="images/og_selectshop.png">
+    <link href="https://fonts.googleapis.com/css2?family=family=Nanum+Gothic&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script th:src="@{/basic.js}"></script>
+    <title>나만의 셀렉샵</title>
+</head>
+<script>
+
+
+
+</script>
+<body>
+<div class="header" style="position:relative;">
+    <div id="header-title-login-user">
+        <span th:text="${username}"></span>
+    </div>
+    <div id="header-title-select-shop">
+        게시판
+    </div>
+
+    <form id="my_form" method="post" action="/user/logout">
+        <a id="logout-text" href="javascript:{}" onclick="document.getElementById('my_form').submit();">로그아웃</a>
+    </form>
+</div>
+<div class="nav">
+    <div class="nav-see active">
+        모아보기
+    </div>
+    <div class="nav-search">
+        게시글 작성
+    </div>
+</div>
+<div id="see-area">
+    <div id="product-container">
+
+    </div>
+</div>
+<div id="search-area">
+    <div class="input-group mb-3" id="username-div">
+        <div class="input-group-prepend">
+            <span class="input-group-text">작성자</span>
+        </div>
+        <input id="username-input" type="text" readonly class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+    </div>
+    <div class="input-group mb-3" id="password-div">
+        <div class="input-group-prepend">
+            <span class="input-group-text">게시글 비밀번호</span>
+        </div>
+        <input id="password-input" type="password" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+    </div>
+    <div>
+        <div class="input-group mb-3" id="title-div">
+            <div class="input-group-prepend">
+                <span class="input-group-text">제목</span>
+            </div>
+            <input id="title-input" type="textarea" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3" id="content-div">
+            <div class="input-group-prepend">
+                <span class="input-group-text">내용</span>
+            </div>
+            <input id="content-input" type="textarea" class="form-control" aria-label="Default" aria-describedby="inputGroup-sizing-default">
+        </div>
+
+<!--        <input type="text" id="query">-->
+        <!--    <img src="images/icon-search.png" alt="">-->
+    </div>
+    <button class="btn btn-primary" onclick="createPosts()">저장하기</button>
+    <div id="search-result-box">
+
+    </div>
+    <div id="container" class="popup-container">
+        <div class="popup">
+            <button id="close" class="close">
+                X
+            </button>
+            <h1>게시글 작성</h1>
+            <div>
+                <input type="text" id="myprice" placeholder="200,000">원
+            </div>
+            <button class="cta" onclick="setMyprice()">설정하기</button>
+        </div>
+    </div>
+</div>
+<div th:if="${admin_role}" id="admin"></div>
+<div id="postList"></div>
+</body>
+
+<script th:inline="javascript">
+    $(document).ready(function () {
+        $('.nav div.nav-search').on('click', function () {
+            $('#username-input').attr('value', [[ ${username} ]]);
+            $('div.nav-see').removeClass('active');
+            $('div.nav-search').addClass('active');
+
+            $('#see-area').hide();
+            $('#search-area').show();
+        })
+    })
+    function createPosts(){
+        let password = $('#password-input').val();
+        let title = $('#title-input').val();
+        let content = $('#content-input').val();
+        if(isValidContents(password) && isValidContents(title) && isValidContents(content)){
+            let data = {"username": [[ ${username} ]], "password": password, "title": title, "content": content}
+            $.ajax({
+                type: "POST",
+                url: "/api/posts",
+                contentType: "application/json",
+                data: JSON.stringify(data),
+                success: function (){
+                    alert("게시글이 정상적으로 등록되었습니다.")
+                    window.location.href = "/"
+                }
+            })
+        }
+    }
+</script>
+</html>

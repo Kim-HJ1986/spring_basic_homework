@@ -1,9 +1,9 @@
 package com.spring.spring_boot_homework.controller;
 
-import com.spring.spring_boot_homework.models.Post;
-import com.spring.spring_boot_homework.models.PostPasswordRequestDto;
-import com.spring.spring_boot_homework.models.PostRepository;
-import com.spring.spring_boot_homework.models.PostRequestDto;
+import com.spring.spring_boot_homework.model.Post;
+import com.spring.spring_boot_homework.dto.PostPasswordRequestDto;
+import com.spring.spring_boot_homework.repository.PostRepository;
+import com.spring.spring_boot_homework.dto.PostRequestDto;
 import com.spring.spring_boot_homework.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -36,20 +36,16 @@ public class PostRestController {
     }
 
     @PutMapping("/api/posts/{id}")
-    public String updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto){
-        if(postService.updatePost(id, requestDto)){
-            return "게시글이 수정되었습니다.";
-        }else{
-            return "비밀번호가 일치하지 않습니다.";
-        }
+    public boolean updatePost(@PathVariable Long id, @RequestBody PostRequestDto requestDto){
+        return postService.updatePost(id, requestDto);
     }
 
     @DeleteMapping("/api/posts/{id}")
-    public String deletePost(@PathVariable Long id, @RequestBody PostPasswordRequestDto requestDto){
+    public boolean deletePost(@PathVariable Long id, @RequestBody PostPasswordRequestDto requestDto){
         if(postService.deletePost(id, requestDto)){
-            return "게시글이 삭제되었습니다.";
+            return true;
         }else{
-            return "비밀번호가 일치하지 않습니다.";
+            return false;
         }
     }
 

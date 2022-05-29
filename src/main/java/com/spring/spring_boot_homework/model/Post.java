@@ -1,6 +1,8 @@
-package com.spring.spring_boot_homework.models;
+package com.spring.spring_boot_homework.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.spring.spring_boot_homework.dto.PostRequestDto;
+import com.spring.spring_boot_homework.util.Timestamped;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -10,7 +12,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 @Entity
-public class Post extends Timestamped{
+public class Post extends Timestamped {
 
     // ID가 자동으로 생성 및 증가합니다.
     @GeneratedValue(strategy = GenerationType.AUTO)
