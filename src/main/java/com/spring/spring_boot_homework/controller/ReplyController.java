@@ -21,13 +21,21 @@ public class ReplyController {
     }
 
     @PostMapping("/api/replies")
-    public Reply createReply(@RequestBody ReplyDto replyDto){
-        return replyService.createReply(replyDto);
+    public Reply createReply(@RequestBody ReplyDto replyDto,
+                             @AuthenticationPrincipal UserDetailsImpl userDetails){
+        return replyService.createReply(replyDto, userDetails);
     }
 
     @PutMapping("/api/replies/{id}")
     public Long updateReply(@RequestBody ReplyDto replyDto, @PathVariable Long id,
                             @AuthenticationPrincipal UserDetailsImpl userDetails){
         return replyService.updateReply(id, replyDto, userDetails);
+    }
+
+    @DeleteMapping("/api/replies/{id}")
+    public Long deleteReply(@RequestBody String username, @PathVariable Long id,
+                            @AuthenticationPrincipal UserDetailsImpl userDetails){
+        replyService.deleteReply(id, username, userDetails);
+        return 1L;
     }
 }

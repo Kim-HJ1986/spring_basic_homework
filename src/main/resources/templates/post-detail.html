@@ -147,7 +147,7 @@
                                         <h5 class="card-title" id="reply${replyId}">${content}</h5>
                                         <h6 class="card-subtitle mb-2 text-muted">${username}</h6>
                                         <a onclick="openReply(${replyId})" class="card-link">수정</a>
-                                        <a onclick="#" class="card-link">삭제</a>
+                                        <a onclick="deleteReply(${replyId})" class="card-link">삭제</a>
                                       </div>
                                     </div>`
                     }else{
@@ -179,11 +179,47 @@
     }
 
     function openReply(replyId){
-        let content = $(`#reply${replyId}`).text();''
+        let content = $(`#reply${replyId}`).text();
         $('#input-content-input').hide();
         $('#container').addClass('active');
         $('#updatedReply').attr('value', content)
         targetId = replyId;
+    }
+
+    function updateReply(replyId){
+        let content = $(`#updatedReply`).val();
+        let username = [[${username}]];
+        let postNum = [[${post.id}]];
+        let data = {"content": content, "username": username, "postNum": postNum};
+        $.ajax({
+            type: "PUT",
+            url: `/api/replies/${targetId}`,
+            contentType: "application/json",
+            data: JSON.stringify(data),
+            success(response){
+                if(response == 1){
+                    alert("댓글이 수정되었습니다.")
+                    window.location.reload();
+                }
+            }
+        })
+    }
+
+    function deleteReply(replyId){
+        let username = [[${username}]];
+        $.ajax({
+            type: "DELETE",
+            url: `/api/replies/${replyId}`,
+            contentType: "application/json",
+            data: username,
+            success(response){
+                if(response == 1){
+                    alert("댓글이 삭제되었습니다.")
+                    window.location.reload();
+                }
+            }
+        })
+
     }
 
     function updatePost(){

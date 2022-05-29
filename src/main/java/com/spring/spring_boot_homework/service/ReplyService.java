@@ -19,7 +19,10 @@ public class ReplyService {
         return replyRepository.findAllByPostNumOrderByModifiedAtDesc(postNum);
     }
 
-    public Reply createReply(ReplyDto replyDto) {
+    public Reply createReply(ReplyDto replyDto, UserDetailsImpl userDetails) {
+        if(userDetails == null){
+            throw new IllegalStateException("로그인이 필요한 기능입니다.");
+        }
         if(replyDto.getContent().length() == 0){
             throw new IllegalStateException("댓글 내용을 입력해주세요");
         }
@@ -30,11 +33,21 @@ public class ReplyService {
     @Transactional
     public Long updateReply(Long id, ReplyDto replyDto, UserDetailsImpl userDetails) {
         if(!replyDto.getUsername().equals(userDetails.getUsername())){
-            throw new IllegalStateException("본인의 댓글만 삭제할 수 있습니다.");
+            throw new IllegalStateException("본인의 댓글만 수정할 수 있습니다.");
         }
         Reply reply = replyRepository.findById(id).orElseThrow(
                 ()-> new IllegalArgumentException("해당 Id의 댓글이 존재하지 않습니다.")
         );
         return reply.update(replyDto);
+    }
+
+    public void deleteReply(Long id, String username, UserDetailsImpl userDetails) {
+        if(!username.equals(userDetails.getUsername())){
+            throw new IllegalStateException("본인의 댓글만 삭제할 수 있습니다.");
+        }
+        Reply reply = replyRepository.findById(id).orElseThrow(
+                ()-> new IllegalArgumentException("해당 Id의 댓글이 존재하지 않습니다.")
+        );
+        replyRepository.delete(reply);
     }
 }
