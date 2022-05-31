@@ -1,13 +1,22 @@
 package com.spring.spring_boot_homework.security;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration // 서버가 기동될 때 설정해주겠다.
 @EnableWebSecurity // 스프링 시큐리티 지원을 가능하게 한다.
@@ -31,8 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception{
         // Get /user/logout 사용 가능하려면 csrf disable()
         http.csrf().disable();
-
+        // 인가 API
         http.authorizeRequests()
+                .antMatchers( "/user/login?error" ).permitAll()
                 // image 폴더를 login 없이 허용
                 .antMatchers("/images/**").permitAll()
                 // css 폴더를 login 없이 허용
@@ -43,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/replies/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
+                    // 인증 API 구현부
                     .formLogin()
                     // 로그인 View 제공 (GET /user/login)
                     .loginPage("/user/login")
@@ -50,9 +61,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .loginProcessingUrl("/user/login")
                     .defaultSuccessUrl("/")
                     // 로그인 처리 후 실패 시 URL
-                    .failureUrl("/user/login?error")
+                    .failureUrl("/user/login?error=")
                     .permitAll()
-                    .permitAll()
+                    .failureHandler(failureHandler())
+                    //.permitAll()
                 .and().logout()
                     .logoutUrl("/user/logout")
                     .permitAll()
@@ -60,5 +72,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .exceptionHandling()
                     // "접근 불가" 페이지 URL 설정
                     .accessDeniedPage("/forbidden.html");
+    }
+
+    @Bean
+    public AuthenticationFailureHandler failureHandler(){
+        return new LoginFailHandler();
     }
 }

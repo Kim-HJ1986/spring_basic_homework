@@ -28,6 +28,15 @@ public class UserService {
         if(found.isPresent()){
             throw new IllegalStateException("중복된 사용자 ID가 존재합니다.");
         }
+        if (!requestDto.getPassword().equals(requestDto.getConfirmPassword())){
+            throw new IllegalStateException("비밀번호 확인 값이 다릅니다.");
+        }
+        if (requestDto.getPassword().length() < 4){
+            throw new IllegalStateException("비밀번호는 최소 4자 이상으로 입력해주세요");
+        }
+        if(requestDto.getPassword().contains(username)){
+            throw new IllegalStateException("비밀번호에는 닉네임과 같은 값이 들어갈 수 없습니다.");
+        }
 
         //패스워드 암호화
         String password = passwordEncoder.encode(requestDto.getPassword());

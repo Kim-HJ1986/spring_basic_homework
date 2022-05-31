@@ -1,5 +1,6 @@
 let targetId;
 
+
 $(document).ready(function () {
 
     getPosts();

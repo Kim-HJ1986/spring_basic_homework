@@ -8,6 +8,7 @@ import lombok.Setter;
 public class UserInfoDto {
     private String username;
     private String password;
+    private String confirmPassword;
     private String email;
     private boolean admin = false;
     private String adminToken = "";
