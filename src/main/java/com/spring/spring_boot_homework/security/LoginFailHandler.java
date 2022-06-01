@@ -21,8 +21,7 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 
 
         if(exception instanceof BadCredentialsException) {
-            String errorMessage = exception.getMessage() + "아이디 혹은 비밀번호를 확인해주세요.";
-            ObjectMapper objectMapper = new ObjectMapper();
+            String errorMessage = exception.getMessage() + ": 아이디 혹은 비밀번호를 확인해주세요.";
             String encodedErrMsg = URLEncoder.encode(errorMessage, "utf-8");
             response.sendRedirect("/user/login?error=" + encodedErrMsg);
 
@@ -30,7 +29,7 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 //            request.setAttribute("LoginFailMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
 
 
-//            request.getRequestDispatcher("/user/login/" + errorMessage).forward(request,response);
+//            request.getRequestDispatcher("/user/login?error").forward(request,response);
 //            System.out.println(exception.getMessage());
 
         }
