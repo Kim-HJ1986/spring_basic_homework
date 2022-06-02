@@ -1,7 +1,6 @@
 package com.spring.spring_boot_homework.service;
 
 import com.spring.spring_boot_homework.dto.UserInfoDto;
-import com.spring.spring_boot_homework.model.UserRoleEnum;
 import com.spring.spring_boot_homework.model.Users;
 import com.spring.spring_boot_homework.repository.UserRepository;
 import org.junit.jupiter.api.DisplayName;
@@ -11,11 +10,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Optional;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceTest {
@@ -68,22 +64,22 @@ public class UserServiceTest {
         UserService userService = new UserService(passwordEncoder, userRepository);
 
         //when
-        Users user1 = userService.registerUser(userInfoDto1);
+        Users user1 = userService.registerUser(userInfoDto1, userDetails);
 
         Exception exception2 = assertThrows(IllegalStateException.class, () -> {
-            userService.registerUser(userInfoDto2);
+            userService.registerUser(userInfoDto2, userDetails);
         });
         Exception exception3 = assertThrows(IllegalStateException.class, () -> {
-            userService.registerUser(userInfoDto3);
+            userService.registerUser(userInfoDto3, userDetails);
         });
         Exception exception4 = assertThrows(IllegalStateException.class, () -> {
-            userService.registerUser(userInfoDto4);
+            userService.registerUser(userInfoDto4, userDetails);
         });
         Exception exception5 = assertThrows(IllegalStateException.class, () -> {
-            userService.registerUser(userInfoDto5);
+            userService.registerUser(userInfoDto5, userDetails);
         });
         Exception exception6 = assertThrows(IllegalStateException.class, () -> {
-            userService.registerUser(userInfoDto6);
+            userService.registerUser(userInfoDto6, userDetails);
         });
 
         //then
