@@ -2,11 +2,14 @@ package com.spring.spring_boot_homework.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.spring.spring_boot_homework.dto.UserInfoDto;
+import com.spring.spring_boot_homework.exception.RestApiException;
 import com.spring.spring_boot_homework.security.UserDetailsImpl;
 import com.spring.spring_boot_homework.service.KakaoUserService;
 import com.spring.spring_boot_homework.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,14 +37,12 @@ public class UserController {
     }
 
     //회원가입 신청
+    @ResponseBody // @ResponseBody 붙여주며 Response의 Body에 내용 담기. 예외 발생 시 핸들러에서 ResponseEntity()에 적절한 값 넣어서 보내준다.
     @PostMapping("user/signup")
-    public String registerUser(@ModelAttribute UserInfoDto requestDto,
+    public String registerUser(@RequestBody UserInfoDto requestDto,
                                @AuthenticationPrincipal UserDetailsImpl userDetails){
-        if(userDetails != null){
-            throw new IllegalStateException("이미 로그인이 되어있습니다.");
-        }
-        userService.registerUser(requestDto);
-        return "redirect:/user/login";
+        userService.registerUser(requestDto, userDetails);
+        return "정상";
     }
 
     //카카오 로그인
@@ -56,5 +57,6 @@ public class UserController {
 
         return "redirect:/";
     }
+
 
 }

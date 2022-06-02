@@ -27,18 +27,31 @@
     }
 
     function signupSubmit(){
-      let data = $('#signupForm').serialize();
+      let data = {
+        "username": $('#jsonUN').val(),
+        "password":$('#jsonPW').val(),
+        "confirmPassword":$('#jsonConfirmPW').val(),
+        "email":$('#jsonEmail').val(),
+        "admin":false,
+        "adminToken":$('#admin-token').val()
+      }
       $.ajax({
         type: "POST",
         url: "/user/signup",
-        contentType: "application/x-www-form-urlencoded",
-        data: data,
+        contentType: "application/json",
+        data: JSON.stringify(data),
         success: function(response){
           alert("회원가입이 정상적으로 처리 되었습니다.")
+          window.location.href = "/user/login"
         },
-        error: function(request){
-          alert(request.responseText);
-          window.location.href = "/user/signup"
+        error: function(response){
+          // alert(response.responseText);
+          if(response.responseJSON && response.responseJSON.errorMessage){
+            alert(response.responseJSON.errorMessage);
+          }else{
+            alert("알 수 없는 에러가 발생했습니다.")
+          }
+          // window.location.href = "/user/signup"
         }
       })
     }
@@ -48,24 +61,24 @@
 <div id="login-form">
   <div id="login-title">회원가입</div>
 
-  <form action="/user/signup" method="post" id="signupForm">
+  <form id="signupForm">
     <div class="login-id-label">Username</div>
-    <input type="text" name="username" placeholder="Username" class="login-input-box">
+    <input id="jsonUN" type="text" name="username" placeholder="Username" class="login-input-box">
 
     <div class="login-id-label">Password</div>
-    <input type="password" name="password" class="login-input-box">
+    <input id="jsonPW" type="password" name="password" class="login-input-box">
 
     <div class="login-id-label">ConfirmPassword</div>
-    <input type="password" name="confirmPassword" class="login-input-box">
+    <input id="jsonConfirmPW" type="password" name="confirmPassword" class="login-input-box">
 
     <div class="login-id-label">E-mail</div>
-    <input type="text" name="email" placeholder="E-mail" class="login-input-box">
+    <input id="jsonEmail" type="text" name="email" placeholder="E-mail" class="login-input-box">
 
     <div>
       <input id="admin-check" type="checkbox" name="admin" onclick="onclickAdmin()" style="margin-top: 40px;">관리자
       <input id="admin-token" type="password" name="adminToken" placeholder="관리자 암호" class="login-input-box" style="display:none">
     </div>
-    <button id="login-id-submit" onclick="signupSubmit()">회원 가입</button>
+    <button type="button" id="login-id-submit" onclick="signupSubmit()">회원 가입</button>
   </form>
 </div>
 </body>
