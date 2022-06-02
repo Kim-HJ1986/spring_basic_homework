@@ -37,9 +37,7 @@ public class UserController {
     }
 
     //회원가입 신청
-<<<<<<< HEAD
     @ResponseBody // @ResponseBody 붙여주며 Response의 Body에 내용 담기. 예외 발생 시 핸들러에서 ResponseEntity()에 적절한 값 넣어서 보내준다.
->>>>>>> 3cc09b9c38f2b1222a082c4f2356159438442e8b
     @PostMapping("user/signup")
     public String registerUser(@RequestBody UserInfoDto requestDto,
                                @AuthenticationPrincipal UserDetailsImpl userDetails){
