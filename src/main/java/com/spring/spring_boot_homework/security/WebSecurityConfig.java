@@ -1,5 +1,7 @@
 package com.spring.spring_boot_homework.security;
 
+import com.spring.spring_boot_homework.security.oauth.OAuth2UserServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -12,13 +14,12 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 @Configuration // 서버가 기동될 때 설정해주겠다.
 @EnableWebSecurity // 스프링 시큐리티 지원을 가능하게 한다.
-@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화
+@EnableGlobalMethodSecurity(securedEnabled = true) // @Secured 어노테이션 활성화 / preAuthorize=true도 가능 검색해서 찾아보기
 public class WebSecurityConfig{ //extends WebSecurityConfigureAdapter
 
-    @Bean
-    public BCryptPasswordEncoder encodePassword() {
-        return new BCryptPasswordEncoder();
-    }
+    @Autowired
+    private OAuth2UserServiceImpl oAuth2UserService;
+
 
 //    @Override
 //    public void configure(WebSecurity web) {
@@ -37,6 +38,10 @@ public class WebSecurityConfig{ //extends WebSecurityConfigureAdapter
         http
                 .csrf().disable()
                 .authorizeRequests((authz) -> authz
+
+                        // .permitAll()은 인증 없이 가능 / .authenticated()는 인증만 필요
+                        // .access("hasRole("ROLE_ADMIN") or hasRole("ROLE_MANAGER"))는 인가(권한)까지 필요
+
                         .antMatchers( "/user/login?error" ).permitAll()
                         // image 폴더를 login 없이 허용
                         .antMatchers("/images/**").permitAll()
@@ -68,7 +73,14 @@ public class WebSecurityConfig{ //extends WebSecurityConfigureAdapter
                 .and()
                 .exceptionHandling()
                 // "접근 불가" 페이지 URL 설정
-                .accessDeniedPage("/forbidden.html");
+                .accessDeniedPage("/forbidden.html")
+                // oauth2 로그인 설정
+                // 구글로그인이 완료된 후 처리가 필요함.
+                .and()
+                .oauth2Login()
+                .loginPage("/user/login")
+                .userInfoEndpoint()
+                .userService(oAuth2UserService); // 코드를 받지 않고 액세스 토큰 + 사용자 프로필 정보를 한번에 받음.
         return http.build();
     }
 

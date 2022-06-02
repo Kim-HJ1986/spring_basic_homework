@@ -1,5 +1,6 @@
 package com.spring.spring_boot_homework.model;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,6 +36,11 @@ public class Users {
     @Column(unique = true)
     private Long kakaoId;
 
+    @Column
+    private String provider;
+    @Column
+    private String providerId;
+
     public Users(String username, String password, String email, UserRoleEnum role) {
         this.username = username;
         this.password = password;
@@ -48,5 +54,17 @@ public class Users {
         this.email = email;
         this.role = role;
         this.kakaoId = kakaoId;
+        this.provider = "kakao";
+    }
+
+    @Builder
+    public Users(String username, String password, String email, UserRoleEnum role, Long kakaoId, String provider, String providerId) {
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+        this.kakaoId = kakaoId;
+        this.provider = provider;
+        this.providerId = providerId;
     }
 }

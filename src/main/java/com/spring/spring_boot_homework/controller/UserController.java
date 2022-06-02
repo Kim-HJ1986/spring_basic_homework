@@ -10,7 +10,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -56,6 +59,28 @@ public class UserController {
         kakaoUserService.kakaoLogin(code);
 
         return "redirect:/";
+    }
+
+
+    // Authentication(토큰) / userDetails / user 값 확인하기.
+    @GetMapping("test/login")
+    public @ResponseBody String testLogin(Authentication authentication){
+        UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+        System.out.println("authentication: " + authentication);
+        System.out.println("userDetails: " + userDetails);
+        System.out.println("user: " + userDetails.getUser());
+        return "세션정보확인하기";
+    }
+
+    // OAuth2 Authentication(토큰) / userDetails / user 값 확인하기.
+    @GetMapping("test/oauth/login")
+    public @ResponseBody String testOAuthLogin(Authentication authentication, @AuthenticationPrincipal OAuth2User oAuth){
+        OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
+        System.out.println("getAttributes: " + oAuth2User.getAttributes());
+        System.out.println("oauth2User: " + oAuth.getAttributes());
+
+        return "OAuth2 세션정보확인하기";
     }
 
 

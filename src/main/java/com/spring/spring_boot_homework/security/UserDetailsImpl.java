@@ -6,16 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Map;
 
-public class UserDetailsImpl implements UserDetails {
+public class UserDetailsImpl implements UserDetails, OAuth2User {
 
     private final Users user;
+    private Map<String, Object> attributes;
 
+    //일반 로그인 할 때 사용하는 생성자
     public UserDetailsImpl(Users user){
         this.user = user;
+    }
+
+    //OAuth 로그인 할 때 사용하는 생성자
+   public UserDetailsImpl(Users user, Map<String, Object> attributes){
+        this.user = user;
+        this.attributes = attributes;
     }
 
     public Users getUser() {
@@ -49,6 +59,8 @@ public class UserDetailsImpl implements UserDetails {
 
     @Override
     public boolean isEnabled() {
+        // 만약 유저가 1년동안 로그인을 하지 않았을 때 휴면계정 처리를 하고싶다면?
+        // 현재 시간 - user.getLoginDate() > 1year 이면 return true; 와 같이 코드를 작성하면 된다.
         return true;
     }
 
@@ -63,5 +75,14 @@ public class UserDetailsImpl implements UserDetails {
 
         return authorities;
 
+    }
+    @Override
+    public Map<String, Object> getAttributes() {
+        return attributes;
+    }
+
+    @Override
+    public String getName() {
+        return null;
     }
 }

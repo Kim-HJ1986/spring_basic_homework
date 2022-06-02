@@ -15,8 +15,11 @@
 <body>
 <div id="login-form">
   <div id="login-title">Login</div>
+  <button id="login-google-btn" onclick="location.href='/oauth2/authorization/google'">
+    구글 로그인하기
+  </button>
   <button id="login-kakao-btn" onclick="location.href='https://kauth.kakao.com/oauth/authorize?client_id=22edaae439989644b90224c7ecfbdf11&redirect_uri=http://localhost:8080/user/kakao/callback&response_type=code'">
-    카카오로 로그인하기
+    카카오 로그인하기
   </button>
   <button id="login-id-btn" onclick="location.href='/user/signup'">
     회원 가입하기
