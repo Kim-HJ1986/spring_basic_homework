@@ -9,11 +9,11 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 public class UserInfoValidator {
-    public static String UserInfoValdation(UserInfoDto requestDto, UserDetailsImpl userDetails, Optional<Users> found){
-        // 로그인 한 유저 판별
-        if(userDetails != null){
-            throw new IllegalStateException("이미 로그인이 되어있습니다.");
-        }
+    public static String UserInfoValdation(UserInfoDto requestDto, Optional<Users> found){
+//        // 로그인 한 유저 판별
+//        if(userDetails != null){
+//            throw new IllegalStateException("이미 로그인이 되어있습니다.");
+//        }
 
         //회원 ID 중복확인
         String username = requestDto.getUsername();

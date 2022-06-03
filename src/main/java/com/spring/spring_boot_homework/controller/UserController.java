@@ -44,7 +44,7 @@ public class UserController {
     @PostMapping("user/signup")
     public String registerUser(@RequestBody UserInfoDto requestDto,
                                @AuthenticationPrincipal UserDetailsImpl userDetails){
-        userService.registerUser(requestDto, userDetails);
+        userService.registerUser(requestDto);
         return "정상";
     }
 

@@ -425,6 +425,53 @@ button {
     /*margin: 0 0 8px;*/
     padding: 11px 12px;
     border-radius: 5px;
+    background-color: #c9c2c2;
+
+    font-family: SpoqaHanSansNeo;
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    color: #414141;
+}
+#login-naver-btn {
+    border-width: 0;
+    margin: 10px 0 8px;
+    width: 393px;
+    height: 62px;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    /*margin: 0 0 8px;*/
+    padding: 11px 12px;
+    border-radius: 5px;
+    background-color: #87e954;
+
+    font-family: SpoqaHanSansNeo;
+    font-size: 20px;
+    font-weight: bold;
+    font-stretch: normal;
+    font-style: normal;
+    color: #414141;
+}
+
+#login-facebook-btn {
+    border-width: 0;
+    margin: 10px 0 8px;
+    width: 393px;
+    height: 62px;
+    flex-grow: 0;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    /*margin: 0 0 8px;*/
+    padding: 11px 12px;
+    border-radius: 5px;
     background-color: #5d91cb;
 
     font-family: SpoqaHanSansNeo;
@@ -473,7 +520,7 @@ button {
     /*height: 16px;*/
     width: 382px;
     padding-left: 11px;
-    margin-top: 40px;
+    margin-top: 20px;
     /*margin: 0 337.9px 14px 11px;*/
     font-family: NotoSansCJKKR;
     font-size: 16px;
@@ -496,7 +543,7 @@ button {
     justify-content: center;
     align-items: center;
     gap: 10px;
-    margin: 40px 0 0;
+    margin: 10px 0 0;
     padding: 11px 12px;
     border-radius: 5px;
     background-color: #15aabf;

@@ -64,22 +64,22 @@ public class UserServiceTest {
         UserService userService = new UserService(passwordEncoder, userRepository);
 
         //when
-        Users user1 = userService.registerUser(userInfoDto1, userDetails);
+        Users user1 = userService.registerUser(userInfoDto1);
 
         Exception exception2 = assertThrows(IllegalStateException.class, () -> {
-            userService.registerUser(userInfoDto2, userDetails);
+            userService.registerUser(userInfoDto2);
         });
         Exception exception3 = assertThrows(IllegalStateException.class, () -> {
-            userService.registerUser(userInfoDto3, userDetails);
+            userService.registerUser(userInfoDto3);
         });
         Exception exception4 = assertThrows(IllegalStateException.class, () -> {
-            userService.registerUser(userInfoDto4, userDetails);
+            userService.registerUser(userInfoDto4);
         });
         Exception exception5 = assertThrows(IllegalStateException.class, () -> {
-            userService.registerUser(userInfoDto5, userDetails);
+            userService.registerUser(userInfoDto5);
         });
         Exception exception6 = assertThrows(IllegalStateException.class, () -> {
-            userService.registerUser(userInfoDto6, userDetails);
+            userService.registerUser(userInfoDto6);
         });
 
         //then

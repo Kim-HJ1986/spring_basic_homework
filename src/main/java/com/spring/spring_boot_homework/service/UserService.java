@@ -23,11 +23,15 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
         this.userRepository = userRepository;
     }
-    public Users registerUser(UserInfoDto requestDto, UserDetailsImpl userDetails) {
+    public Users registerUser(UserInfoDto requestDto) {
 
         // 회원가입 정보 Validation check -> OOP 핵심기능의 모듈화 (UserInfoValidator.class)
         Optional<Users> found = userRepository.findByUsername(requestDto.getUsername());
-        String username = UserInfoValidator.UserInfoValdation(requestDto, userDetails, found);
+        if(found.isPresent()){
+            throw new IllegalStateException("이미 로그인이 되어있습니다.");
+        }
+
+        String username = UserInfoValidator.UserInfoValdation(requestDto, found);
 
         //패스워드 암호화
         String password = passwordEncoder.encode(requestDto.getPassword());

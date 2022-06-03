@@ -27,6 +27,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     // 로그인 요청시 AuthenticationManager의 요청에 의해 username에 해당하는 User가 있는지 확인 후 리턴해준다.
     // 로그인 폼 방식에서 인풋의 name이 username이라서 아래 메서드의 파라미터 명이 username이 된 것. (둘이 같아야함)
     // 만약 다른 값으로 설정해주고 싶다면 WebSecurityConfig에서 .usernameParameter()를 설정해줘야한다.
+    // 아래 함수 실행 결과로 @AuthenticationPrincipal 어노테이션이 만들어진다.
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Users user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Can't find " + username));

@@ -29,7 +29,7 @@ public class ReplyController {
     @PutMapping("/api/replies/{id}")
     public Long updateReply(@RequestBody ReplyDto replyDto, @PathVariable Long id,
                             @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return replyService.updateReply(id, replyDto, userDetails);
+            return replyService.updateReply(id, replyDto, userDetails);
     }
 
     @DeleteMapping("/api/replies/{id}")
@@ -38,4 +38,5 @@ public class ReplyController {
         replyService.deleteReply(id, username, userDetails);
         return 1L;
     }
+
 }
